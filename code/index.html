@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./favicons/favicon-16x16.png">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <title>Pokédex - Guess the Pokémon</title>
+</head>
+<body>
+  <main>
+    <!-- Cenário de fundo -->
+    <div class="game-background"></div>
+    <div class="trees"></div>
+    
+    <!-- Barra de vida com 3 segmentos -->
+    <div class="life-bar">
+      <div class="life-bar__segment green" id="segment1"></div>
+      <div class="life-bar__segment green" id="segment2"></div>
+      <div class="life-bar__segment green" id="segment3"></div>
+    </div>
+
+    <div class="score-display">
+      <p>Pontuação: <span id="current-score">0</span></p>
+      <p>Recorde: <span id="high-score">0</span></p>
+    </div>
+    
+    <img src="#" alt="pokemon" class="pokemon__image hidden">
+
+    <h1 class="pokemon__data">
+      <span class="pokemon__number"></span>
+      <span class="pokemon__name"></span>
+    </h1>
+
+    <!-- Caixa para mostrar as respostas do jogo -->
+    <div class="game-response-box">
+      <p class="response-text">Adivinhe o Pokémon!</p>
+    </div>
+
+    <form class="form">
+      <input type="search" class="input__search" placeholder="Digite o nome do Pokémon" required />
+      <ul class="suggestions-list"></ul>
+    </form>
+
+    <div class="buttons">
+      <button class="button btn-hint">Dica</button>
+      <button class="button btn-restart">Recomeçar</button>
+    </div>
+    
+    <p class="hint-text"></p>
+    <img src="pokedex.png" alt="pokedex" class="pokedex">
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p class="footer-text">
+        Desenvolvido por <span class="developer-name">SEU NOME AQUI</span>
+        <span class="footer-pokeball">🔴</span>
+      </p>
+      <div class="social-links">
+        <a href="#" title="GitHub">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        <a href="#" title="LinkedIn">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+      </div>
+      <p class="game-version">v1.0.0</p>
+    </div>
+  </footer>
+</body>
+</html>
