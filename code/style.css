@@ -57,7 +57,7 @@ main {
 
 /* Formulário de busca */
 .form {
-  position: absolute;
+  position: relative;
   width: 60%;
   top: 65%;
   left: 18%;
@@ -146,27 +146,33 @@ main {
   animation: shake 0.5s ease-in-out;
 }
 
-/* Lista de sugestões */
+/* Lista de sugestões - Implementação melhorada */
 .suggestions-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
-  max-height: 150px;
+  max-height: 120px; /* Reduced from 150px */
   overflow-y: auto;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   position: absolute;
   width: 100%;
   z-index: 10;
 }
 
 .suggestions-list li {
-  padding: 6px 8px;
+  padding: 8px 10px;
   cursor: pointer;
   font-size: 14px;
   text-transform: capitalize;
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.suggestions-list li:last-child {
+  border-bottom: none;
 }
 
 .suggestions-list li:hover {
@@ -178,6 +184,24 @@ main {
   font-weight: bold;
 }
 
+/* Fixing the container to maintain proper positioning */
+.form {
+  position: relative;
+}
+
+/* Adding subtle scroll indicator for users to know they can scroll */
+.suggestions-list:after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.05), transparent);
+  pointer-events: none;
+}
+
 .suggestions-container {
   position: relative;
   width: 100%;
@@ -186,8 +210,8 @@ main {
 /* Barra de vida */
 .life-bar {
   position: absolute;
-  top: 12%;
-  right: 22%;
+  top: 22%;
+  right: 18%;
   width: 120px;
   height: 10px;
   border: 2px solid #000;
@@ -195,6 +219,7 @@ main {
   border-radius: 5px;
   overflow: hidden;
   display: flex;
+  z-index: 7;
 }
 
 .life-bar__segment {
@@ -219,14 +244,19 @@ main {
   background-color: #ddd;
 }
 
+/* Ajustado: Posição das dicas movida mais para baixo */
 .hint-text {
   font-size: 0.9rem;
   color: #333;
   position: absolute;
-  bottom: 8%;
+  bottom: 8%; /* Movido mais para baixo */
   left: 50%;
   transform: translateX(-50%);
   width: 80%;
+  z-index: 5;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 5px;
+  border-radius: 5px;
 }
 
 /* Caixa de resposta do jogo */
@@ -270,7 +300,7 @@ main {
   display: none;
 }
 
-/* Footer estilizado */
+/* Footer estilizado - Removido border-top */
 footer {
   background: linear-gradient(to top, #3d7dca, #5090d6);
   color: white;
@@ -279,6 +309,7 @@ footer {
   box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
   position: relative;
   width: 100%;
+  border-top: none;
 }
 
 .footer-content {
@@ -341,12 +372,12 @@ footer {
   margin-top: 5px;
 }
 
-/* Estilo para o display de pontuação */
+/* Estilo para o display de pontuação - Atualizado: alinhado com a life-bar, mas à esquerda */
 .score-display {
   position: absolute;
-  top: 15%;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 19%; /* Alinhado com a life-bar */
+  left: 15%;
+  transform: translateX(0);
   background-color: rgba(255, 255, 255, 0.8);
   padding: 8px 12px;
   border-radius: 10px;
@@ -379,241 +410,287 @@ footer {
   animation: scoreAdd 0.5s ease-out;
 }
 
-/* ================ RESPONSIVIDADE ================ */
+/* ================ IMPROVED RESPONSIVIDADE ================ */
 
-/* Configurações gerais para melhorar o posicionamento */
+/* Base variables for consistent spacing and sizing */
+:root {
+  --container-padding: 15px;
+  --element-spacing: 10px;
+  --border-radius: 5px;
+  --box-shadow-standard: -3px 4px 0 #888, -5px 7px 0 #333;
+  --transition-standard: all 0.2s ease;
+}
+
+/* Global responsive adjustments */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: var(--container-padding);
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+}
+
+.pokedex {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Responsive container for all game elements */
+.game-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 133.33%; /* 4:3 aspect ratio */
+}
+
+/* Pokemon image positioning - using percentages for better scaling */
 .pokemon__image {
-  bottom: 60%; /* Movido mais para cima */
-  transform: translate(-63%, 10%); /* Ajustado para ficar mais elevado */
-}
-
-.life-bar {
-  right: 25%; /* Movido mais para direita */
-  top: 14%; /* Ajustado verticalmente */
-}
-
-.score-display {
-  top: 15%;
+  position: absolute;
+  bottom: 55%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 130px; /* Tamanho padrão ajustado */
+  transform: translate(-63%, 20%);
+  height: auto;
+  max-height: 22%; /* Aumentado de 18% para 22% */
+  width: auto;
+  max-width: 45%; /* Aumentado de 40% para 45% */
+  object-fit: contain;
+  z-index: 5;
 }
 
+/* Responsive data display */
 .pokemon__data {
-  top: 52%; /* Movido mais para cima */
+  position: absolute;
+  font-weight: 600;
+  color: #aaa;
+  top: 52%;
+  right: 27%;
+  font-size: clamp(8px, 5vw, 25px);
+  width: 46%;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+/* Search form with improved positioning */
 .form {
-  top: 62%; /* Movido para cima */
+  position: absolute;
+  width: 65%; /* Aumentado de 60% para 65% */
+  top: 62%;
+  left: 46%; /* Ajustado de 50% para 46% para mover um pouco para esquerda */
+  transform: translateX(-50%);
+  z-index: 6;
 }
 
-.game-response-box {
-  top: 70%; /* Ajustado para cima */
+.input__search {
+  width: 100%;
+  padding: clamp(4px, 4%, 12px);
+  font-size: clamp(8px, 4vw, 1rem);
+  box-shadow: var(--box-shadow-standard);
 }
 
+/* Responsive buttons */
 .buttons {
-  bottom: 18%; /* Movido mais para cima */
-  gap: 20px; /* Espaçamento consistente */
+  position: absolute;
+  bottom: 16%; /* Movido para baixo de 18% para 16% */
+  left: 46%; /* Ajustado para esquerda de 50% para 46% */
+  width: 65%; /* Aumentado de 65% para 70% */
+  transform: translateX(-50%);
+  display: flex;
+  gap: clamp(10px, 3vw, 20px);
+  justify-content: center;
+  z-index: 6;
 }
 
-/* Dispositivos Extra Pequenos (até 320px - Celulares pequenos) */
+.button {
+  flex: 1;
+  padding: clamp(6px, 4%, 12px);
+  font-size: clamp(8px, 3.5vw, 0.9rem);
+  box-shadow: -2px 3px 0 #222, -4px 6px 0 #000;
+  transition: var(--transition-standard);
+}
+
+/* Game response box positioning */
+.game-response-box {
+  position: absolute;
+  width: 65%; /* Aumentado para a mesma largura do input */
+  top: 70%;
+  left: 46%; /* Ajustado para a esquerda como o input */
+  transform: translateX(-50%);
+  padding: clamp(6px, 3%, 12px);
+  font-size: clamp(8px, 3.5vw, 0.9rem);
+  box-shadow: var(--box-shadow-standard);
+  z-index: 5;
+}
+
+/* Suggestion list improvements */
+.suggestions-list {
+  max-height: clamp(100px, 30vh, 150px);
+  font-size: clamp(12px, 3.5vw, 16px);
+  z-index: 10;
+}
+
+.suggestions-list li {
+  padding: clamp(5px, 1.5vw, 10px) clamp(6px, 2vw, 12px);
+}
+
+/* Extra Small devices (phones, 320px and below) */
 @media screen and (max-width: 320px) {
   main {
-    padding: 10px;
-    margin-top: 5%;
+    transform: scale(0.95);
+    transform-origin: top center;
   }
-  
+
   .pokemon__image {
-    height: 16%;
-    bottom: 60%;
+    bottom: 55%;
+    max-height: 19%; /* Ajuste para telas pequenas */
+  }
+
+  .buttons {
+    gap: 8px;
+    width: 75%;
+    bottom: 14%; /* Ajuste para telas pequenas */
+  }
+
+  .input__search, .game-response-box {
+    font-size: clamp(7px, 3vw, 0.75rem);
   }
   
-  .form {
-    width: 65%;
-    left: 15%;
-    top: 62%;
+  .form, .game-response-box {
+    width: 70%;
+    left: 45%; /* Ajuste para telas pequenas */
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .score-display {
+    top: 19%;
+    left: 15%; /* Adjusted for smaller screens */
+    transform: scale(0.9);
+  }
+  
+  .life-bar {
+    top: 22%;
+    right: 15%;
+    transform: scale(0.9);
+  }
+  
+  .hint-text {
+    bottom: 7%; /* Ajustado mais para baixo em telas pequenas */
+  }
+}
+
+/* Small devices (phones, 321px - 480px) */
+@media screen and (min-width: 321px) and (max-width: 480px) {
+  .pokemon__image {
+    max-height: 20%; /* Aumentado para dispositivos pequenos */
+    bottom: 55%;
+  }
+  
+  .form, .game-response-box {
+    width: 70%;
+    left: 45%; /* Ajustado para esquerda */
   }
   
   .buttons {
     width: 70%;
-    bottom: 18%;
-    gap: 10px;
+    bottom: 14%; /* Ajustado para baixo */
+    left: 45%; /* Ajustado para esquerda */
   }
   
-  .button {
-    font-size: clamp(7px, 3.5vw, 0.8rem);
-  }
-  
-  .game-response-box {
-    width: 65%;
+  .score-display {
+    padding: 6px 10px;
+    top: 19%;
     left: 15%;
-    top: 70%;
-    font-size: clamp(7px, 3.5vw, 0.8rem);
-  }
-  
-  .score-display {
-    width: 100px;
-    font-size: 0.75rem;
-    padding: 5px 8px;
   }
   
   .life-bar {
-    width: 90px;
-    top: 14%;
-    right: 25%;
+    top: 22%;
+    right: 16%;
+  }
+  
+  .hint-text {
+    bottom: 8%; /* Ajustado mais para baixo */
   }
 }
 
-/* Dispositivos Pequenos (321px - 480px - Celulares maiores) */
-@media screen and (min-width: 321px) and (max-width: 480px) {
-  .form {
-    width: 62%;
-    left: 17%;
-    top: 62%;
-  }
-  
-  .buttons {
-    width: 65%;
-    bottom: 18%;
-    gap: 12px;
-  }
-  
-  .game-response-box {
-    width: 62%;
-    left: 17%;
-    top: 70%;
-  }
-  
-  .score-display {
-    width: 110px;
-  }
-  
-  .life-bar {
-    width: 100px;
-    right: 25%;
-    top: 14%;
-  }
-}
-
-/* Dispositivos Médios (481px - 768px - Tablets e celulares na horizontal) */
+/* Medium devices (tablets, 481px - 768px) */
 @media screen and (min-width: 481px) and (max-width: 768px) {
   main {
     max-width: 450px;
   }
   
   .pokemon__image {
-    height: 19%;
-    bottom: 60%;
+    max-height: 21%; /* Aumentado para tablets */
+    bottom: 55%;
   }
   
-  .form {
-    width: 58%;
-    left: 19%;
-    top: 62%;
+  .form, .game-response-box {
+    width: 65%;
+    left: 46%;
   }
   
   .buttons {
-    width: 58%;
-    bottom: 18%;
-  }
-  
-  .game-response-box {
-    width: 58%;
-    left: 19%;
-    top: 70%;
+    width: 65%;
+    gap: 15px;
+    bottom: 15%;
+    left: 46%;
   }
   
   .score-display {
-    width: 130px;
-    font-size: 0.9rem;
-    top: 15%;
+    top: 19%;
+    left: 15%;
   }
   
   .life-bar {
-    width: 130px;
-    right: 25%;
-    top: 14%;
+    top: 22%;
+    right: 18%;
   }
   
-  .footer-content {
-    flex-direction: row;
-    gap: 20px;
+  .hint-text {
+    bottom: 8%; /* Ajustado mais para baixo */
   }
 }
 
-/* Dispositivos Grandes (769px - 1024px - Tablets grandes e notebooks) */
+/* Large devices (desktops, 769px - 1024px) */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
   main {
     max-width: 500px;
   }
   
   .pokemon__image {
-    height: 20%;
-    bottom: 60%;
+    max-height: 22%;
   }
   
-  .form {
-    width: 55%;
-    left: 20%;
-    top: 62%;
+  .form, .game-response-box {
+    width: 65%;
+    left: 46%;
   }
   
   .buttons {
-    width: 55%;
-    bottom: 18%;
+    width: 65%;
     gap: 20px;
-  }
-  
-  .button {
-    font-size: 0.95rem;
-  }
-  
-  .game-response-box {
-    width: 55%;
-    left: 20%;
-    top: 70%;
-    font-size: 0.95rem;
-  }
-  
-  .score-display {
-    width: 140px;
-    font-size: 0.95rem;
-    top: 15%;
-  }
-  
-  .life-bar {
-    width: 140px;
-    right: 25%;
-    top: 14%;
-  }
-}
-
-/* Dispositivos Extra Grandes (1025px ou mais - Desktops grandes, TVs) */
-@media screen and (min-width: 1025px) {
-  main {
-    max-width: 500px;
-  }
-  
-  .pokemon__image {
-    height: 21%;
-    bottom: 60%;
-  }
-  
-  .form {
-    width: 55%;
-    left: 20%;
-    top: 62%;
-  }
-  
-  .buttons {
-    width: 55%;
-    bottom: 18%;
-    gap: 25px;
-  }
-  
-  .button {
-    font-size: 1rem;
-    padding: 3.5%;
+    bottom: 15%;
+    left: 46%;
   }
   
   .button:hover {
@@ -621,63 +698,209 @@ footer {
     transform: translateY(-2px);
   }
   
-  .game-response-box {
-    width: 55%;
-    left: 20%;
-    top: 70%;
-    font-size: 1rem;
-  }
-  
   .score-display {
-    width: 150px;
-    font-size: 1rem;
-    padding: 10px 15px;
-    top: 15%;
+    top: 19%;
+    left: 15%;
   }
   
   .life-bar {
-    width: 150px;
-    height: 12px;
-    right: 25%;
-    top: 14%;
+    top: 22%;
+    right: 18%;
   }
   
-  .suggestions-list li {
-    padding: 8px 10px;
-    font-size: 16px;
+  .hint-text {
+    bottom: 8%; /* Ajustado mais para baixo */
   }
 }
 
-/* Orientação paisagem em dispositivos móveis */
+/* Extra Large devices (large desktops, 1025px and up) */
+@media screen and (min-width: 1025px) {
+  main {
+    max-width: 500px;
+  }
+  
+  .pokemon__image {
+    max-height: 23%; /* Aumentado para desktops */
+  }
+  
+  .form, .game-response-box {
+    width: 65%;
+    left: 46%;
+  }
+  
+  .buttons {
+    width: 65%;
+    bottom: 15%;
+    left: 46%;
+  }
+  
+  .button {
+    transition: all 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #555;
+    transform: translateY(-2px);
+  }
+  
+  .suggestions-list li {
+    transition: background-color 0.2s ease;
+  }
+  
+  .score-display {
+    top: 19%;
+    left: 15%;
+  }
+  
+  .life-bar {
+    top: 22%;
+    right: 18%;
+  }
+  
+  .hint-text {
+    bottom: 8%; /* Ajustado mais para baixo */
+  }
+}
+
+/* Landscape orientation adjustments */
 @media screen and (max-height: 500px) and (orientation: landscape) {
   main {
-    margin-top: 1%;
+    margin-top: 0;
+    padding-top: 0;
     max-width: 400px;
-    transform: scale(0.9);
+    transform: scale(0.85);
     transform-origin: top center;
   }
   
   .pokemon__image {
-    bottom: 60%;
+    bottom: 55%;
+    max-height: 19%;
   }
   
   .form {
     top: 62%;
+    left: 46%;
   }
   
   .game-response-box {
     top: 70%;
+    left: 46%;
   }
   
   .buttons {
-    bottom: 18%;
+    bottom: 15%;
+    left: 46%;
   }
   
-  footer {
-    padding: 10px 0;
+  .footer {
+    padding: 8px 0;
   }
   
   .footer-content {
     padding: 0 10px;
+  }
+  
+  .score-display {
+    top: 19%;
+    left: 15%;
+    transform: scale(0.85);
+  }
+  
+  .life-bar {
+    top: 22%;
+    right: 16%;
+    transform: scale(0.85);
+  }
+  
+  .hint-text {
+    bottom: 7%; /* Ajustado mais para baixo */
+  }
+}
+
+/* Tall phones in portrait mode */
+@media screen and (min-height: 800px) and (max-width: 500px) {
+  main {
+    margin-top: 5%;
+  }
+  
+  .pokemon__image {
+    max-height: 22%;
+  }
+  
+  .form {
+    top: 62%;
+    left: 46%;
+  }
+  
+  .game-response-box {
+    top: 70%;
+    left: 46%;
+  }
+  
+  .buttons {
+    bottom: 15%;
+    left: 46%;
+  }
+  
+  .score-display {
+    top: 19%;
+    left: 15%;
+  }
+  
+  .life-bar {
+    top: 22%;
+    right: 18%;
+  }
+  
+  .hint-text {
+    bottom: 8%; /* Ajustado mais para baixo */
+  }
+}
+
+/* High pixel density screens (retina displays, etc) */
+@media screen and (-webkit-min-device-pixel-ratio: 2), 
+       screen and (min--moz-device-pixel-ratio: 2),
+       screen and (min-resolution: 192dpi) {
+  .pokedex {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+  
+  .pokemon__image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Screen reader and accessibility enhancements */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .suggestions-list {
+    background-color: #333;
+    border-color: #555;
+  }
+  
+  .suggestions-list li {
+    color: #eee;
+  }
+  
+  .suggestions-list li:hover {
+    background-color: #444;
+  }
+  
+  .suggestions-list li.selected {
+    background-color: #555;
   }
 }

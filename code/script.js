@@ -101,19 +101,21 @@ const renderPokemon = async (pokemon) => {
   }
 };
 
+// Update function for suggestions to handle pagination
 const updateSuggestions = (suggestions) => {
-  suggestionsList.innerHTML = ''; // Limpa as sugestões anteriores
+  suggestionsList.innerHTML = ''; // Clears previous suggestions
+  
   suggestions.forEach((suggestion, index) => {
     const listItem = document.createElement('li');
-    listItem.textContent = suggestion.charAt(0).toUpperCase() + suggestion.slice(1); // Capitaliza a primeira letra
+    listItem.textContent = suggestion.charAt(0).toUpperCase() + suggestion.slice(1); // Capitalizes first letter
     listItem.addEventListener('click', () => {
       input.value = suggestion;
       checkAnswer(suggestion);
-      suggestionsList.innerHTML = ''; // Limpa as sugestões após seleção
-      suggestionsActive = false; // Desativa as sugestões após a escolha
+      suggestionsList.innerHTML = ''; // Clears suggestions after selection
+      suggestionsActive = false; // Deactivates suggestions after choice
     });
 
-    // Adiciona a classe de seleção para o item ativo
+    // Adds selection class for active item
     if (index === currentSelectionIndex) {
       listItem.classList.add('selected');
     }
@@ -175,22 +177,79 @@ const checkAnswer = (playerAnswer) => {
   }
 };
 
-// Função para controlar a navegação com as setas
+// Modified keydown event to handle pagination through suggestions
 input.addEventListener('keydown', (e) => {
   const items = document.querySelectorAll('.suggestions-list li');
-
-  if (e.key === 'ArrowDown' && currentSelectionIndex < items.length - 1) {
-    currentSelectionIndex++;
-    updateSuggestions(Array.from(items).map(item => item.textContent)); // Atualiza a seleção das sugestões
-  } else if (e.key === 'ArrowUp' && currentSelectionIndex > 0) {
-    currentSelectionIndex--;
-    updateSuggestions(Array.from(items).map(item => item.textContent)); // Atualiza a seleção das sugestões
+  const maxIndex = items.length - 1;
+  
+  if (!window.allSuggestions || window.allSuggestions.length === 0) return;
+  
+  if (e.key === 'ArrowDown') {
+    e.preventDefault(); // Prevents cursor from moving in input field
+    
+    if (currentSelectionIndex < maxIndex) {
+      // Move selection down within current page
+      currentSelectionIndex++;
+    } else {
+      // Move to next page of suggestions if available
+      if ((window.currentSuggestionPage + 1) * window.suggestionsPerPage < window.allSuggestions.length) {
+        window.currentSuggestionPage++;
+        currentSelectionIndex = 0;
+        
+        // Get next page of suggestions
+        const startIndex = window.currentSuggestionPage * window.suggestionsPerPage;
+        const endIndex = startIndex + window.suggestionsPerPage;
+        const nextPageSuggestions = window.allSuggestions.slice(startIndex, endIndex);
+        
+        updateSuggestions(nextPageSuggestions);
+        return;
+      }
+    }
+    
+    // Update the visual selection
+    items.forEach((item, idx) => {
+      if (idx === currentSelectionIndex) {
+        item.classList.add('selected');
+      } else {
+        item.classList.remove('selected');
+      }
+    });
+    
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault(); // Prevents cursor from moving in input field
+    
+    if (currentSelectionIndex > 0) {
+      // Move selection up within current page
+      currentSelectionIndex--;
+    } else if (currentSelectionIndex === 0 && window.currentSuggestionPage > 0) {
+      // Move to previous page of suggestions
+      window.currentSuggestionPage--;
+      
+      // Get previous page of suggestions
+      const startIndex = window.currentSuggestionPage * window.suggestionsPerPage;
+      const endIndex = startIndex + window.suggestionsPerPage;
+      const prevPageSuggestions = window.allSuggestions.slice(startIndex, endIndex);
+      
+      updateSuggestions(prevPageSuggestions);
+      currentSelectionIndex = prevPageSuggestions.length - 1;
+      return;
+    }
+    
+    // Update the visual selection
+    items.forEach((item, idx) => {
+      if (idx === currentSelectionIndex) {
+        item.classList.add('selected');
+      } else {
+        item.classList.remove('selected');
+      }
+    });
+    
   } else if (e.key === 'Enter' && currentSelectionIndex >= 0 && items.length > 0) {
-    e.preventDefault(); // Evita o submit do formulário
+    e.preventDefault(); // Prevents form submission
     const selectedItem = items[currentSelectionIndex].textContent;
     input.value = selectedItem;
     checkAnswer(selectedItem);
-    suggestionsList.innerHTML = ''; // Limpa as sugestões após seleção
+    suggestionsList.innerHTML = ''; // Clears suggestions after selection
     suggestionsActive = false;
   }
 });
@@ -207,22 +266,31 @@ form.addEventListener('submit', (e) => {
   }
 });
 
-// Função que será chamada ao digitar no input
+// Modification for the input event listener to limit suggestions displayed
 input.addEventListener('input', async () => {
   const query = input.value.toLowerCase();
   if (query.length > 1) {
     const allPokemons = await fetch('https://pokeapi.co/api/v2/pokemon?limit=898'); // Lista de todos os Pokémons
     const allPokemonsData = await allPokemons.json();
-    const suggestions = allPokemonsData.results
+    const filteredSuggestions = allPokemonsData.results
       .filter(pokemon => pokemon.name.toLowerCase().includes(query))
       .map(pokemon => pokemon.name);
-
-    updateSuggestions(suggestions);
-    suggestionsActive = true; // Ativa as sugestões quando há uma lista válida
-    currentSelectionIndex = -1; // Resetando a seleção ao digitar novo texto
+    
+    // Limit the displayed suggestions to a maximum of 3 at a time
+    let displaySuggestions = filteredSuggestions.slice(0, 3);
+    
+    // Store all suggestions for navigation
+    window.allSuggestions = filteredSuggestions;
+    window.currentSuggestionPage = 0;
+    window.suggestionsPerPage = 3;
+    
+    updateSuggestions(displaySuggestions);
+    suggestionsActive = filteredSuggestions.length > 0;
+    currentSelectionIndex = -1; // Resetting selection when typing new text
   } else {
-    suggestionsList.innerHTML = ''; // Limpa a lista se o input for muito curto
-    suggestionsActive = false; // Desativa as sugestões caso o input seja muito curto
+    suggestionsList.innerHTML = ''; // Clears the list if input is too short
+    suggestionsActive = false; // Deactivates suggestions if input is too short
+    window.allSuggestions = [];
   }
 });
 
@@ -265,12 +333,5 @@ buttonRestart.addEventListener('click', () => {
   renderPokemon(Math.floor(Math.random() * 898) + 1);
 });
 
-// Event listener para inicializar o jogo e a pontuação
-document.addEventListener('DOMContentLoaded', () => {
-  updateScoreDisplay();
-  renderPokemon(Math.floor(Math.random() * 898) + 1);
-});
-
-// Se não houver o evento DOMContentLoaded, mantenha também a inicialização original
-// para garantir compatibilidade
+// Inicializar o jogo
 renderPokemon(Math.floor(Math.random() * 898) + 1);
