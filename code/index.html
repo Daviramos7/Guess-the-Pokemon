@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +7,16 @@
   <link rel="stylesheet" href="style.css">
   <script defer src="script.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <title>Pokédex - Guess the Pokémon</title>
+  <title>Pokédex - Adivinhe o Pokémon</title>
 </head>
 <body>
   <main>
     <!-- Cenário de fundo -->
     <div class="game-background"></div>
     <div class="trees"></div>
+    
+    <!-- Área da tela da Pokédex -->
+    <div class="pokemon-screen-area"></div>
     
     <!-- Barra de vida com 3 segmentos -->
     <div class="life-bar">
@@ -34,22 +37,65 @@
       <span class="pokemon__name"></span>
     </h1>
 
-    <!-- Caixa para mostrar as respostas do jogo -->
-    <div class="game-response-box">
-      <p class="response-text">Adivinhe o Pokémon!</p>
+    <!-- Balão multifuncional com abas -->
+    <div class="multifunctional-bubble">
+      <!-- Navegação de abas -->
+      <div class="tab-navigation">
+        <button class="tab-button active" data-tab="attempts" title="Tentativas">
+          <i class="fas fa-list"></i>
+          <span class="tab-text">Tentativas</span>
+        </button>
+        <button class="tab-button" data-tab="hints" title="Dicas">
+          <i class="fas fa-lightbulb"></i>
+          <span class="tab-text">Dicas</span>
+        </button>
+        <button class="tab-button" data-tab="response" title="Recomeçar">
+          <i class="fas fa-sync-alt"></i>
+          <span class="tab-text">Recomeçar</span>
+        </button>
+        <div class="tab-arrows">
+          <button class="tab-arrow left" aria-label="Aba anterior" title="Aba anterior">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="tab-arrow right" aria-label="Próxima aba" title="Próxima aba">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Container do conteúdo das abas -->
+      <div class="tab-content">
+        <!-- Aba 1: Tentativas e formulário -->
+        <div class="tab-panel active" id="attempts-tab">
+          <div class="attempts-container"></div>
+        </div>
+        
+        <!-- Aba 2: Dicas -->
+        <div class="tab-panel" id="hints-tab">
+          <div class="hints-container">
+            <button class="button btn-hint">Obter Dica</button>
+            <div class="hints-content"></div>
+          </div>
+        </div>
+        
+        <!-- Aba 3: Resposta e Recomeçar -->
+        <div class="tab-panel" id="response-tab">
+          <div class="response-content">
+            <button class="button btn-restart">Recomeçar Jogo</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <form class="form">
-      <input type="search" class="input__search" placeholder="Digite o nome do Pokémon" required />
-      <ul class="suggestions-list"></ul>
-    </form>
-
-    <div class="buttons">
-      <button class="button btn-hint">Dica</button>
-      <button class="button btn-restart">Recomeçar</button>
+    <!-- Campo de busca fora do balão multifuncional -->
+    <div class="form-container">
+      <form class="form">
+        <span class="search-icon"><i class="fas fa-search"></i></span>
+        <input type="search" class="input__search" placeholder="Digite o nome do Pokémon" required />
+        <button type="button" class="clear-button" title="Limpar"><i class="fas fa-times"></i></button>
+      </form>
     </div>
-    
-    <p class="hint-text"></p>
+
     <img src="pokedex.png" alt="pokedex" class="pokedex">
   </main>
 
