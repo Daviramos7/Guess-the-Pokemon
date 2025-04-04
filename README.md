@@ -1,7 +1,11 @@
 # Who Are a Pokémon?
 
 <div align="center">
+<<<<<<< HEAD
   <img src="code/img/Who are a pokémon Print.png" alt="Pokédex" width="400">
+=======
+  <img src="code/pokedex.png" alt="Pokédex" width="400">
+>>>>>>> 1048d5665b9267f83495db0113af6aaf43d44cf4
 </div>
 
 ## 📱 [Jogar Agora](https://daviramos7.github.io/Who-Are-a-Pokemon/)
@@ -76,7 +80,10 @@ Você também pode usar uma extensão de servidor local como o Live Server no VS
 - [ ] Adicionar mais gerações de Pokémon
 - [ ] Implementar modo de jogo diário (desafio do dia)
 - [ ] Sistema de conquistas e estatísticas
+<<<<<<< HEAD
 - [ ] Modo multiplayer com competição entre amigos
+=======
+>>>>>>> 1048d5665b9267f83495db0113af6aaf43d44cf4
 - [ ] Temas alternativos de interface
 
 ## 👤 Autor
@@ -94,4 +101,8 @@ Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes
 
 <div align="center">
   <p>🔴 Gotta Catch 'Em All! 🔴</p>
+<<<<<<< HEAD
 </div> 
+=======
+</div>
+>>>>>>> 1048d5665b9267f83495db0113af6aaf43d44cf4
