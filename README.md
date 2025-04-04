@@ -4,7 +4,6 @@
 <<<<<<< HEAD
   <img src="code/img/Who are a pokémon Print.png" alt="Pokédex" width="400">
 =======
-  <img src="code/pokedex.png" alt="Pokédex" width="400">
 >>>>>>> 1048d5665b9267f83495db0113af6aaf43d44cf4
 </div>
 
