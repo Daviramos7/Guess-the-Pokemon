@@ -112,7 +112,7 @@ main {
 /* Estilo para o balão multifuncional */
 .multifunctional-bubble {
   position: absolute;
-  bottom: 15%;
+  bottom: 14%;
   left: 46%;
   transform: translateX(-50%);
   width: 71%;
@@ -236,7 +236,7 @@ main {
   max-width: 310px;
   left: 46%;
   transform: translateX(-50%);
-  bottom: 10%;
+  bottom: calc(14% - 36px); /* Encosta diretamente embaixo do balão */
   padding: 0;
   height: auto;
   background: white;
@@ -1044,6 +1044,8 @@ footer {
 @media screen and (min-width: 768px) {
   .tab-text {
     display: block;
+    white-space: nowrap;
+    overflow: visible;
   }
   
   .tab-button {
@@ -1051,10 +1053,18 @@ footer {
     gap: 5px;
     padding: 8px;
     font-size: 0.9rem;
+    min-width: 33%;
+    white-space: nowrap;
   }
   
   .multifunctional-bubble {
-    width: 71%;
+    width: 75%;
+    max-width: 360px;
+  }
+  
+  .form-container {
+    width: 75%;
+    max-width: 360px;
   }
 }
 
@@ -1080,7 +1090,7 @@ footer {
   }
   
   .form-container {
-    bottom: 5%;
+    bottom: calc(14% - 36px); /* Ajustado para encostar no balão */
     width: 71%;
     left: 46%;
   }
@@ -1108,26 +1118,26 @@ footer {
 
 @media (max-width: 480px) {
   .multifunctional-bubble {
-    bottom: 13%;
+    bottom: 14%;
     width: 71%;
     left: 46%;
   }
   
   .tab-content {
-    height: 145px;
+    height: 155px;
   }
   
   .attempts-container {
-    max-height: 130px;
+    max-height: 140px;
     margin-top: 5px;
   }
   
   .attempts-bubble {
-    bottom: 13%;
+    bottom: 14%;
   }
   
   .form-container {
-    bottom: 4%;
+    bottom: calc(14% - 36px); /* Ajustado para encostar no balão */
     width: 71%;
     left: 46%;
   }
@@ -1404,17 +1414,17 @@ footer {
 /* Adicionar media query para desktop */
 @media screen and (min-width: 1024px) {
   .form-container {
-    width: 71%;
-    max-width: 280px;
+    width: 75%;
+    max-width: 380px;
     left: 46%;
-    bottom: 10%;
+    bottom: calc(14% - 40px); /* Padronizado com outras telas */
   }
   
   .multifunctional-bubble {
-    width: 71%;
-    max-width: 280px;
+    width: 75%;
+    max-width: 380px;
     left: 46%;
-    bottom: 15%;
+    bottom: 14%;
   }
   
   .pokemon__image {
