@@ -1,7 +1,7 @@
 # Who Are a Pokémon?
 
 <div align="center">
-  <img src="code/img/Who are a pokémon Print.png" alt="Pokédex" width="400">
+  <img src="img/Who are a pokémon Print.png" alt="Pokédex" width="400">
 </div>
 
 ## 📱 [Jogar Agora](https://daviramos7.github.io/Who-Are-a-Pokemon/)
