@@ -31,9 +31,9 @@ let currentTabIndex = 0;
 
 // Função para reiniciar o jogo
 function restartGame() {
-  score = 0;
-  updateScoreDisplay();
-  renderPokemon(Math.floor(Math.random() * 151) + 1);
+  // Não zere a pontuação
+  updateScoreDisplay(); // Atualiza a exibição da pontuação
+  renderPokemon(Math.floor(Math.random() * 151) + 1); // Reinicia o jogo com um novo Pokémon
   setActiveTab(0); // Volta para a aba de tentativas
 }
 
@@ -394,11 +394,7 @@ const checkGuess = async (guess) => {
   try {
     // Verificar se o jogador já ganhou ou perdeu
     if (attemptsLeft <= 0) {
-      // Atualizar a caixa de resposta na aba de tentativas
       updateGameResponse(`Acabaram suas chances! Era ${currentPokemon.name}.`, 'game-over');
-      
-      // Não mudar para a aba de recomeçar após a derrota
-      // Permanecer na aba de tentativas
       return;
     }
     
@@ -412,7 +408,6 @@ const checkGuess = async (guess) => {
     // Buscar informações do Pokémon do palpite
     const data = await fetchPokemon(guessLower);
     if (data) {
-      // Comparar com o Pokémon atual
       const isCorrect = data.name === currentPokemon.name;
       addAttempt(data, isCorrect);
       
@@ -430,52 +425,29 @@ const checkGuess = async (guess) => {
         }
         updateScoreDisplay();
         
-        // Atualizar resposta
         const message = `Parabéns! Você acertou! +${10 * attemptsLeft} pontos`;
         updateGameResponse(message, 'correct');
-        
-        // Não mudar para a aba de recomeçar após a vitória
-        // Permanecer na aba de tentativas
       } else {
         // Errou
         attemptsLeft--;
         updateLifeBar();
         
         if (attemptsLeft <= 0) {
-          // Game over
           const message = `Acabaram suas chances! Era ${currentPokemon.name}.`;
           updateGameResponse(message, 'game-over');
-          
-          // Revelar o Pokémon
-          pokemonImage.classList.remove('hidden', 'silhouette');
-          pokemonImage.classList.add('revealed');
-          pokemonName.innerHTML = currentPokemon.name;
-          
-          // Não mudar para a aba de recomeçar após a derrota
-          // Permanecer na aba de tentativas
         } else {
-          // Ainda tem chances
           const message = `Incorreto! Tente novamente. ${attemptsLeft} chance(s) restante(s).`;
           updateGameResponse(message, 'incorrect');
-          
-          // Permanecer na aba de tentativas
-          setActiveTab(0);
         }
       }
     } else {
       const message = 'Pokémon não encontrado. Tente outro.';
       updateGameResponse(message, 'incorrect');
-      
-      // Permanecer na aba de tentativas
-      setActiveTab(0);
     }
   } catch (error) {
     console.error('Erro ao verificar palpite', error);
     const message = 'Erro ao verificar palpite. Tente novamente.';
     updateGameResponse(message, 'incorrect');
-    
-    // Permanecer na aba de tentativas
-    setActiveTab(0);
   }
 };
 
