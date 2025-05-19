@@ -4,7 +4,7 @@
   <img src="img/Who are a pokémon Print.png" alt="Pokédex" width="400">
 </div>
 
-## 📱 [Jogar Agora](https://daviramos7.github.io/Who-Are-a-Pokemon/)
+## 📱 [Jogar Agora](https://who-are-a-pokemon.vercel.app/)
 
 ## 📖 Sobre o Projeto
 
