@@ -4,7 +4,7 @@
   <img src="img/Who are a pokémon Print.png" alt="Guess the Pokémon" width="400">
 </div>
 
-## 📱 [Jogar Agora](https://who-are-a-pokemon.vercel.app/)
+## 📱 [Jogar Agora](https://guess-the-pokemon-coral.vercel.app/)
 
 ## 📖 Sobre o Projeto
 
